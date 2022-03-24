@@ -17,5 +17,9 @@ I created the project mainly to improve my knowledge in python and API's.
     export YAHOO_API_KEY= yourYahooAPIKey
     export NEWS_API_KEY= yourNewsAPIKey
    ```
+4. Execute:
+  ```
+    python3 telegram_bot.py
+   ```
 ## Contact
    Feel free to contact me via email: finkbeinerrico@gmail.com
