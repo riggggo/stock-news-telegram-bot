@@ -11,15 +11,15 @@ I created the project mainly to improve my knowledge in python and API's.
    * [News API](https://newsapi.org/)
 2. Create a Telegram Bot
 3. Set the environment variables:
-   ```
+    ```
     export MY_BOT_TOKEN= yourTelegramBotToken
     export ALPHAVANTAGE_API_KEY= yourAlphaVantageAPIKey
     export YAHOO_API_KEY= yourYahooAPIKey
     export NEWS_API_KEY= yourNewsAPIKey
-   ```
+    ```
 4. Execute:
-  ```
+    ```
     python3 telegram_bot.py
-   ```
+    ```
 ## Contact
    Feel free to contact me via email: finkbeinerrico@gmail.com
