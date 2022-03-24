@@ -4,7 +4,7 @@ A telegram bot sending daily stock news. Stocks can be choosen by the user.
 I created the project mainly to improve my knowledge in python and API's.
 
 
-##Usage
+## Usage
 1. Create your API keys at
    * [Yahoo Finance API](https://www.yahoofinanceapi.com/)
    * [Alpha Vantage API](https://www.alphavantage.co/)
@@ -17,5 +17,5 @@ I created the project mainly to improve my knowledge in python and API's.
     export YAHOO_API_KEY= yourYahooAPIKey
     export NEWS_API_KEY= yourNewsAPIKey
    ```
-##Contact
+## Contact
    Feel free to contact me via email: finkbeinerrico@gmail.com
