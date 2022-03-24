@@ -38,10 +38,11 @@ def get_stock_ticker_symbol(company_name):
             response.raise_for_status()
             if len(response.json().get("ResultSet").get("Result")) == 0:
                 return ""
-            stock_ticker_symbol = "AAPL"  # response.json().get("ResultSet").get("Result")[0].get("symbol")
+            stock_ticker_symbol = response.json().get("ResultSet").get("Result")[0].get("symbol")
             data[company_name] = stock_ticker_symbol
             with open(file="stock_ticker_symbols.json", mode="w") as data_file:
                 json.dump(data, data_file, indent=4)
+            return stock_ticker_symbol
         else:
             return data.get(company_name)
 
