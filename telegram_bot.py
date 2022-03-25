@@ -13,7 +13,7 @@ last_message_id = -1
 chat_ids = []
 company_names = []
 GREETINGS = ["hallo", "hello", "hi", "hey", "moin", "servus"]
-COMMAND_LIST = ["/add", "/remove"]
+COMMAND_LIST = ["/add", "/remove", "/list"]
 
 
 def set_up():
@@ -42,7 +42,11 @@ def get_data():
 def get_message_id(data, i):
     if len(data) < abs(i):
         return -1
-    return data[i].get("message").get("message_id")
+    message = data[i].get("message")
+    if message is not None:
+        return message.get("message_id")
+    else:
+        return -1
 
 
 def get_message(data, i):
@@ -52,7 +56,7 @@ def get_message(data, i):
     if chat_id not in chat_ids:
         new_conversation = {
             chat_id: {
-                "company's": [],
+                "companies": [],
                 "add_mode": False,
                 "remove_mode": False
             }
@@ -77,10 +81,10 @@ def add_company_name(company_name, chat_id):
     try:
         with open("data.json", mode="r") as data_file:
             data = json.load(data_file)
-            company_name_list = data.get(chat_id).get("company's")
+            company_name_list = data.get(chat_id).get("companies")
             if company_name not in company_name_list:
                 company_name_list.append(company_name)
-                data.get(chat_id)["company's"] = company_name_list
+                data.get(chat_id)["companies"] = company_name_list
             else:
                 return f"You already added {company_name}."
         with open("data.json", mode="w") as data_file:
@@ -95,10 +99,10 @@ def remove_company_name(company_name, chat_id):
     try:
         with open("data.json", mode="r") as data_file:
             data = json.load(data_file)
-            company_name_list = data.get(chat_id).get("company's")
+            company_name_list = data.get(chat_id).get("companies")
         if company_name in company_name_list:
             company_name_list.remove(company_name)
-            data.get(chat_id)["company's"] = company_name_list
+            data.get(chat_id)["companies"] = company_name_list
             with open("data.json", mode="w") as data_file:
                 json.dump(data, data_file, indent=4)
             if len(company_name_list) == 0:
@@ -143,6 +147,17 @@ def bot_answer(message_list):
         sending_messages(message=f"Please enter a company name to stop getting news about it: ", chat_id=chat_id)
         set_mode("add_mode", False, chat_id)
         set_mode("remove_mode", True, chat_id)
+    elif message.lower() == COMMAND_LIST[2]:    # list
+        try:
+            with open("data.json", mode="r") as data_file:
+                message_data = json.load(data_file)
+                companies = message_data.get(chat_id).get("companies")
+        except (json.decoder.JSONDecodeError, FileNotFoundError) as e:
+            sending_messages(message=f"Something went wrong :( (\"{print(e)}\".",
+                             chat_id=chat_id)
+        else:
+            sending_messages(message=f"You will receive news about the following companies: {companies}",
+                             chat_id=chat_id)
     else:
         message = message.title()
         try:
@@ -182,7 +197,7 @@ def send_news():
             all_chats = list(data.keys())
             all_chats.remove("last_message_id")
             for chat_id in all_chats:
-                company_list = data.get(chat_id).get("company's")
+                company_list = data.get(chat_id).get("companies")
                 message_list = []
                 for company in company_list:
                     message_list.append(stock_news.get_all_data(company))
@@ -198,9 +213,10 @@ def send_news():
 def answer_all_new_messages():
     global last_message_id
     current_message_id = get_message_id(received_data, -1)
-    if last_message_id == current_message_id:
+    if last_message_id == current_message_id or current_message_id == -1:
         pass
     else:
+        message_info_list_to_answer = []
         index = -1
         current_message_id = get_message_id(received_data, index)
         tmp = current_message_id
@@ -215,12 +231,15 @@ def answer_all_new_messages():
                 json.dump(stored_data, all_data, indent=4)
         while True:
             message_info = get_message(received_data, index)
-            bot_answer(message_info)
+            message_info_list_to_answer.append(message_info)
             index -= 1
             current_message_id = get_message_id(received_data, index)
             if current_message_id == -1 or current_message_id == last_message_id:
                 last_message_id = tmp
                 break
+        message_info_list_to_answer = message_info_list_to_answer[::-1]
+        for message_info in message_info_list_to_answer:
+            bot_answer(message_info)
 
 
 daily_news_sent = False
@@ -228,7 +247,7 @@ set_up()
 while True:
     current_time = dt.datetime.now().hour
     if not daily_news_sent:
-        if current_time == 18:
+        if current_time == 17:
             send_news()
             daily_news_sent = True
     if current_time == 0:
