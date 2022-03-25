@@ -242,6 +242,7 @@ def answer_all_new_messages():
             bot_answer(message_info)
 
 
+
 daily_news_sent = False
 set_up()
 while True:
