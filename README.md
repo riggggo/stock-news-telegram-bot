@@ -3,7 +3,7 @@
 A telegram bot sending daily stock news. Stocks can be choosen by the user.
 I created the project mainly to improve my knowledge in python and API's.
 
-<img src="https://github.com/riggggo/stock-news-telegram-bot/blob/main/screenshot.png" alt="Screenshot" width="400"/>
+<img src="https://github.com/riggggo/stock-news-telegram-bot/blob/main/screenshot.png" alt="Screenshot" width="200"/>
 
 ## Usage
 1. Create your API keys at

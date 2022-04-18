@@ -11,7 +11,6 @@ request_url = f"https://api.telegram.org/bot{MY_BOT_TOKEN}/getUpdates"
 send_url = f"https://api.telegram.org/bot{MY_BOT_TOKEN}/sendMessage"
 last_message_id = -1
 chat_ids = []
-company_names = []
 GREETINGS = ["hallo", "hello", "hi", "hey", "moin", "servus"]
 COMMAND_LIST = ["/add", "/remove", "/list"]
 
@@ -89,7 +88,6 @@ def add_company_name(company_name, chat_id):
                 return f"You already added {company_name}."
         with open("data.json", mode="w") as data_file:
             json.dump(data, data_file, indent=4)
-        company_names.append(company_name)
         return f"Congratulations! You will receive every evening news about \"{company_name}\"."
     except (json.decoder.JSONDecodeError, FileNotFoundError) as e:
         return f"Something went wrong :( (\"{print(e)}\"."
@@ -138,6 +136,8 @@ def bot_answer(message_list):
         sending_messages(
             message=f"Use the following commands to setup your stock news notifications:\n{command_string}",
             chat_id=chat_id)
+        set_mode("add_mode", False, chat_id)
+        set_mode("remove_mode", False, chat_id)
     elif message.lower() == COMMAND_LIST[0]:  # add
         sending_messages(message=f"Please enter a company name to receive daily news: (e.g. \"Apple or \"Tesla\")",
                          chat_id=chat_id)
@@ -148,6 +148,8 @@ def bot_answer(message_list):
         set_mode("add_mode", False, chat_id)
         set_mode("remove_mode", True, chat_id)
     elif message.lower() == COMMAND_LIST[2]:    # list
+        set_mode("add_mode", False, chat_id)
+        set_mode("remove_mode", False, chat_id)
         try:
             with open("data.json", mode="r") as data_file:
                 message_data = json.load(data_file)
@@ -248,7 +250,7 @@ set_up()
 while True:
     current_time = dt.datetime.now().hour
     if not daily_news_sent:
-        if current_time == 17:
+        if current_time == 19:
             send_news()
             daily_news_sent = True
     if current_time == 0:
