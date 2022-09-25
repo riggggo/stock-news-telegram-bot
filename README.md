@@ -7,7 +7,8 @@ I created the project mainly to improve my knowledge in python and API's.
 
 
 ## Update (25.09.2022)
-### Unfortunately Yahoo does not longer provide a finance api. Therefore, an alternative to look up the ticker symbols must be found and implemented. 
+
+Unfortunately, Yahoo no longer offers a financial API. Therefore, an alternative to look up the ticker symbols must be found and implemented. 
 
 
 ## Usage
