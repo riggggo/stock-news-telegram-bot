@@ -5,6 +5,11 @@ I created the project mainly to improve my knowledge in python and API's.
 
 <img src="https://github.com/riggggo/stock-news-telegram-bot/blob/main/screenshot.png" alt="Screenshot" width="200"/>
 
+
+## Update (25.09.2022)
+### Unfortunately Yahoo does not longer provide a finance api. Therefore, an alternative to look up the ticker symbols must be found and implemented. 
+
+
 ## Usage
 1. Create your API keys at
    * [Yahoo Finance API](https://www.yahoofinanceapi.com/)
